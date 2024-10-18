@@ -24,6 +24,7 @@ public class CatController {
         List<Cat> cats = catService.findAllCats();
 
         Map<String,Object> map = new HashMap<>();
+        map.put("message", "Authentication successful");
         map.put("user", authentication.getName());
         map.put("cats", cats);
 

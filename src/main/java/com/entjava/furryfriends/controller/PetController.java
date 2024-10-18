@@ -23,6 +23,7 @@ public class PetController {
         List<Pet> pets = petService.findAllPets();
 
         Map<String,Object> map = new HashMap<>();
+        map.put("message", "Authentication successful");
         map.put("user", authentication.getName());
         map.put("pets",pets);
 

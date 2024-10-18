@@ -24,6 +24,7 @@ public class DogController {
         List<Dog> dogs = dogService.findAllDogs();
 
         Map<String,Object> map = new HashMap<>();
+        map.put("message", "Authentication successful");
         map.put("user", authentication.getName());
         map.put("dogs", dogs);
 
