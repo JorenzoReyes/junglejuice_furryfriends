@@ -4,6 +4,9 @@ import com.entjava.furryfriends.model.Bird;
 import com.entjava.furryfriends.service.BirdService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.security.core.Authentication;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/birds")
@@ -15,14 +18,20 @@ public class BirdController {
     public BirdController(BirdService birdService) {this.birdService = birdService;}
 
     @GetMapping
-    public List<Bird> getAllBirds() {
-        return birdService.findAllBirds();
+    public Map<String,Object> getAllBirds(Authentication authentication)
+    {
+        List<Bird> birds = birdService.findAllBirds();
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("user", authentication.getName());
+        map.put("birds", birds);
+
+        return map;
     }
 
     @PostMapping
     public Bird createBird(@RequestBody Bird bird) {
-        return birdService.saveBird(bird);
-    }
+        return birdService.saveBird(bird);}
 
     @DeleteMapping("/{id}")
     public void deleteBird(@PathVariable Long id) {

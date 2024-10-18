@@ -4,6 +4,10 @@ import com.entjava.furryfriends.model.Snake;
 import com.entjava.furryfriends.service.SnakeService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.security.core.Authentication;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/snakes")
@@ -14,7 +18,16 @@ public class SnakeController {
     public SnakeController(SnakeService snakeService) {this.snakeService = snakeService;}
 
     @GetMapping
-    public List<Snake> getAllSnakes() {return snakeService.findAllSnakes();}
+    public Map<String, Object> getAllSnakes(Authentication authentication)
+    {
+        List<Snake> snakes = snakeService.findAllSnakes();
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("user", authentication.getName());
+        map.put("snakes",snakes);
+
+        return map;
+    }
 
     @PostMapping
     public Snake createSnake(@RequestBody Snake snake) {return snakeService.saveSnake(snake);}

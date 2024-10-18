@@ -4,6 +4,9 @@ import com.entjava.furryfriends.model.Dog;
 import com.entjava.furryfriends.service.DogService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.security.core.Authentication;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/dogs")
@@ -16,8 +19,15 @@ public class DogController {
     }
 
     @GetMapping
-    public List<Dog> getAllDogs() {
-        return dogService.findAllDogs();
+    public Map<String,Object> getAllDogs(Authentication authentication)
+    {
+        List<Dog> dogs = dogService.findAllDogs();
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("user", authentication.getName());
+        map.put("dogs", dogs);
+
+        return map;
     }
 
     @PostMapping
